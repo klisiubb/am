@@ -10,7 +10,7 @@ import {
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { ellipse, homeOutline, navigateCircleOutline, square, star, triangle } from 'ionicons/icons';
+import { ellipse, homeOutline, navigateCircleOutline, personOutline, square, star, triangle } from 'ionicons/icons';
 
 
 /* Core CSS required for Ionic components to work properly */
@@ -35,6 +35,7 @@ import { ClerkProvider, SignedOut, RedirectToSignIn, SignedIn } from '@clerk/cle
 import Home from './pages/Home';
 import Routes from './pages/Routes';
 import Reviews from './pages/Reviews';
+import Profile from './pages/Profile';
 
 setupIonicReact();
 const clerkPubKey = "pk_test_bWVhc3VyZWQtYmVhZ2xlLTQ0LmNsZXJrLmFjY291bnRzLmRldiQ";
@@ -57,6 +58,9 @@ const App: React.FC = () => (
           <Route path="/reviews">
             <Reviews />
           </Route>
+          <Route path="/profile">
+            <Profile />
+          </Route>
           <Route exact path="/">
             <Redirect to="/home" />
           </Route>
@@ -73,6 +77,10 @@ const App: React.FC = () => (
           <IonTabButton tab="Reviews" href="/reviews">
             <IonIcon aria-hidden="true" icon={star} />
             <IonLabel>Review</IonLabel>
+          </IonTabButton>
+          <IonTabButton tab="Profile" href="/profile">
+            <IonIcon aria-hidden="true" icon={personOutline} />
+            <IonLabel>Profile</IonLabel>
           </IonTabButton>
         </IonTabBar>
       </IonTabs>
