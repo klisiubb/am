@@ -1,25 +1,55 @@
 import React, { useEffect, useState } from "react";
-import { IonButton, IonContent, IonPage, useIonViewDidEnter } from "@ionic/react";
+import { IonContent, IonPage, useIonViewDidEnter } from "@ionic/react";
 import Map from "./Map";
-import { Geolocation } from '@capacitor/geolocation';
 
-const ExploreContainer: React.FC = () => {
-  const [userLocation, setUserLocation] = useState<[number, number]>([49.8225, 19.0442]); // Default to Bielsko-Biała
-  const [endCoords, setEndCoords] = useState<[number, number]>([49.72, 19.34]);
+interface Coordinate {
+  latitude: number;
+  longitude: number;
+}
+
+interface Id {
+  id: string;
+}
+
+const ExploreContainer: React.FC<Id> = ({ id }) => {
+  const [waypoints, setWaypoints] = useState<Coordinate[]>([]);
 
   useEffect(() => {
-    const fetchUserLocation = async () => {
+    const fetchData = async () => {
       try {
-        const currentPosition = await Geolocation.getCurrentPosition();
-        const { latitude, longitude } = currentPosition.coords;
-        setUserLocation([latitude, longitude]);
+        // Fetch user location using the browser's native geolocation API
+        const position = await new Promise<GeolocationPosition>((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject);
+        });
+
+        const userWaypoint: Coordinate = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        };
+        setWaypoints([userWaypoint]);
+
+        // Fetch waypoints from the API
+        const routeId = id;
+        const response = await fetch(`http://localhost:3000/routes/${routeId}`);
+        if (response.ok) {
+          const data = await response.json();
+          const routeCoordinates: Coordinate[] = data.coordinates.map((coord: any) => ({
+            latitude: parseFloat(coord.latitude),
+            longitude: parseFloat(coord.longitude),
+          }));
+
+          // Add user location at the beginning of waypoints array
+          setWaypoints([userWaypoint, ...routeCoordinates]);
+        } else {
+          console.error("Failed to fetch route coordinates");
+        }
       } catch (error) {
-        console.error("Error fetching user location:", error);
+        console.error("Error fetching data:", error);
       }
     };
 
-    fetchUserLocation();
-  }, []);
+    fetchData();
+  }, [id]);
 
   useIonViewDidEnter(() => {
     window.dispatchEvent(new Event('resize'));
@@ -28,7 +58,7 @@ const ExploreContainer: React.FC = () => {
   return (
     <IonPage>
       <IonContent>
-        <Map startCoords={userLocation} endCoords={endCoords} />
+        <Map waypoints={waypoints.map(waypoint => [waypoint.latitude, waypoint.longitude])} />
       </IonContent>
     </IonPage>
   );

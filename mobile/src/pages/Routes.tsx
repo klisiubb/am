@@ -1,8 +1,43 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import ExploreContainer from '../components/ExploreContainer';
-
+import React, { useState, useEffect } from "react";
+import {
+  IonContent,
+  IonHeader,
+  IonPage,
+  IonTitle,
+  IonToolbar,
+  IonList,
+  IonItem,
+  IonLabel,
+  IonSpinner,
+  IonToast,
+  IonButton,
+} from "@ionic/react";
 
 const Routes: React.FC = () => {
+  const [routes, setRoutes] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchRoutes = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/routes/");
+        if (response.ok) {
+          const data = await response.json();
+          setRoutes(data);
+        } else {
+          throw new Error("Failed to fetch routes");
+        }
+      } catch (error) {
+        setError("Error fetching routes. Please try again later.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchRoutes();
+  }, []);
+
   return (
     <IonPage>
       <IonHeader>
@@ -11,12 +46,26 @@ const Routes: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">Routes</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <ExploreContainer/>
+        {isLoading && <IonSpinner />}
+        {error && (
+          <IonToast
+            isOpen={true}
+            message={error}
+            color="danger"
+            duration={3000}
+            onDidDismiss={() => setError(null)}
+          />
+        )}
+        {!isLoading && !error && (
+          <IonList>
+            {routes.map((route) => (
+              <IonItem key={route.id}>
+                <IonLabel>{route.description}</IonLabel>
+                <IonButton routerLink={`/routes/${route.id}`}>View</IonButton>
+              </IonItem>
+            ))}
+          </IonList>
+        )}
       </IonContent>
     </IonPage>
   );
