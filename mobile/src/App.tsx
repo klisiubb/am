@@ -34,7 +34,6 @@ import './theme/variables.css';
 import { ClerkProvider, SignedOut, RedirectToSignIn, SignedIn } from '@clerk/clerk-react';
 import Home from './pages/Home';
 import Routes from './pages/Routes';
-import Reviews from './pages/Reviews';
 import Profile from './pages/Profile';
 import View from './pages/View';
 
@@ -59,9 +58,6 @@ const App: React.FC = () => (
           <Route exact path="/routes/:id">
               <View/>
             </Route>
-          <Route path="/reviews">
-            <Reviews />
-          </Route>
           <Route path="/profile">
             <Profile />
           </Route>
@@ -77,10 +73,6 @@ const App: React.FC = () => (
           <IonTabButton tab="Routes" href="/routes">
             <IonIcon aria-hidden="true" icon={navigateCircleOutline} />
             <IonLabel>Routes</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="Reviews" href="/reviews">
-            <IonIcon aria-hidden="true" icon={star} />
-            <IonLabel>Review</IonLabel>
           </IonTabButton>
           <IonTabButton tab="Profile" href="/profile">
             <IonIcon aria-hidden="true" icon={personOutline} />
