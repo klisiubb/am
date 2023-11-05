@@ -1,26 +1,27 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonContent, IonHeader, IonLabel, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import { useParams } from 'react-router';
-import ViewRoute from '../components/ViewRoute';
+import  DescriptionList  from '../components/DescriptionList';
 
-const View: React.FC = () => {
+const Description: React.FC = () => {
+
     const { id } = useParams<{ id: string }>();
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>View Route</IonTitle>
+          <IonTitle>Description</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large">View Route {id}</IonTitle>
+            <IonTitle size="large">Description</IonTitle>
           </IonToolbar>
         </IonHeader>
+        <DescriptionList id={id}/>
       </IonContent>
-      <ViewRoute id={id}/>
     </IonPage>
   );
 };
 
-export default View;
+export default Description;

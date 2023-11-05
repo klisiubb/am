@@ -36,6 +36,7 @@ import Home from './pages/Home';
 import Routes from './pages/Routes';
 import Profile from './pages/Profile';
 import View from './pages/View';
+import Description from './pages/Description';
 
 setupIonicReact();
 const clerkPubKey = "pk_test_bWVhc3VyZWQtYmVhZ2xlLTQ0LmNsZXJrLmFjY291bnRzLmRldiQ";
@@ -57,6 +58,9 @@ const App: React.FC = () => (
           </Route>
           <Route exact path="/routes/:id">
               <View/>
+            </Route>
+            <Route exact path="/routes/description/:id">
+              <Description />
             </Route>
           <Route path="/profile">
             <Profile />

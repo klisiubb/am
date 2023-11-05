@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUser } from '@clerk/clerk-react';
+import { SignOutButton, useUser } from '@clerk/clerk-react';
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonAvatar, IonLabel } from '@ionic/react';
 
 const Profile: React.FC = () => {
@@ -33,6 +33,9 @@ const Profile: React.FC = () => {
           <IonLabel style={{ marginTop: '1em', textAlign: 'center' }}>
             <h3>{user.primaryEmailAddress?.emailAddress}</h3>
             <h3>User since: {user.createdAt?.toLocaleDateString()}</h3>
+          </IonLabel>
+          <IonLabel>
+            <SignOutButton />
           </IonLabel>
         </div>
       </IonContent>

@@ -10,13 +10,12 @@ export class RoutesService {
         return routes;
     }
     async getRouteById(id: number) {
-        console.log(id);
         const route = await this.prisma.route.findUnique({
             where: {
                 id: id,
             },
             include: {
-                coordinates: true, // Include the coordinates associated with the route
+                coordinates: true,
             },
         });
 

@@ -3,6 +3,8 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import Directions from "./Directions";
 import { IonButton, IonPage } from "@ionic/react";
 
+
+
 interface MapProps {
     waypoints: Array<[number, number]>;
 }
@@ -34,9 +36,6 @@ const Map: React.FC<MapProps> = ({ waypoints }) => {
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                 {waypoints.map((waypoint, index) => (
                     <Marker key={index} position={waypoint}>
-                        <Popup>
-                            Example Popup Content for Waypoint {index + 1}
-                        </Popup>
                     </Marker>
                 ))}
                 <Directions waypoints={waypoints} />

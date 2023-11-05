@@ -21,12 +21,18 @@ const Routes: React.FC = () => {
   useEffect(() => {
     const fetchRoutes = async () => {
       try {
-        const response = await fetch("http://localhost:3000/routes/");
-        if (response.ok) {
-          const data = await response.json();
-          setRoutes(data);
+        const cachedRoutes = sessionStorage.getItem("routes");
+        if (cachedRoutes) {
+          setRoutes(JSON.parse(cachedRoutes));
         } else {
-          throw new Error("Failed to fetch routes");
+          const response = await fetch("http://localhost:3000/routes/");
+          if (response.ok) {
+            const data = await response.json();
+            setRoutes(data);
+            sessionStorage.setItem("routes", JSON.stringify(data));
+          } else {
+            throw new Error("Failed to fetch routes");
+          }
         }
       } catch (error) {
         setError("Error fetching routes. Please try again later.");
@@ -60,7 +66,8 @@ const Routes: React.FC = () => {
           <IonList>
             {routes.map((route) => (
               <IonItem key={route.id}>
-                <IonLabel>{route.description}</IonLabel>
+                <IonLabel>{route.name}</IonLabel>
+                <IonButton routerLink={`/routes/description/${route.id}`}>See description</IonButton>
                 <IonButton routerLink={`/routes/${route.id}`}>View</IonButton>
               </IonItem>
             ))}

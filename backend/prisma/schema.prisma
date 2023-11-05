@@ -13,6 +13,7 @@ model Coordinate {
   id          Int       @id @default(autoincrement())
   latitude    Float
   longitude   Float
+  name String
   description String
   direction   Route     @relation(fields: [routeId], references: [id])
   routeId     Int
@@ -20,6 +21,6 @@ model Coordinate {
 
 model Route {
   id          Int         @id @default(autoincrement())
-  description String
+  name String
   coordinates Coordinate[]
 }
